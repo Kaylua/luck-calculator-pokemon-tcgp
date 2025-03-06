@@ -47,12 +47,17 @@ body {
   border-color: transparent transparent transparent #fff;
 }
 
-/* Style pour le bouton de fermeture placé à droite du titre */
 .close-btn {
   font-size: 22px;
   color: red;
-  cursor: pointer;
+  cursor: pointer; /* Indique que c'est cliquable */
   margin-left: 10px;
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Animation fluide */
+}
+
+.close-btn:hover {
+  color: darkred; /* Assombrit la croix en hover */
+  transform: scale(1.2); /* Légère augmentation de taille */
 }
 
 /* Wrapper pour aligner les deux blocs */
@@ -72,6 +77,25 @@ body {
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+#leaderboard p {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0;
+  cursor: pointer; /* Change le curseur en mode cliquable */
+  transition: background-color 0.2s ease-in-out; /* Animation fluide */
+  padding: 5px; /* Ajoute un petit padding pour un meilleur effet */
+  border-radius: 5px; /* Coins légèrement arrondis */
+}
+
+#leaderboard p:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Changement léger de couleur */
+}
+
+
+#leaderboard p span {
+  font-weight: normal;
 }
 
 .leaderboard-container {

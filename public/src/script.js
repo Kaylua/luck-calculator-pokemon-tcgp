@@ -74,6 +74,7 @@ function calculateLuck(packsOpened, cardType) {
   const cardsPerPack = 5;
   const numSeries = 3;
   const typeKeys = {'crown':'cr', 'three star':'3s', 'two star':'2s', 'one star':'1s', 'rare':'rare', 'four diamond':'4d'};
+  const typeEmojis = {'crown':'👑', 'three star':'⭐⭐⭐', 'two star':'⭐⭐', 'one star':'⭐', 'four diamond':'♦♦♦♦', 'rare':'🃏'};
   const rarity = typeKeys[cardType];
 
   const rates = {
@@ -99,47 +100,47 @@ function calculateLuck(packsOpened, cardType) {
   if (isNaN(numCards)) return;
 
   if (numCards > packsOpened * 5) {
-    resultStr += `Valeur improbable pour ${cardType}. `;
+    resultStr += `Valeur improbable pour ${typeEmojis[cardType]}. `;
   } else if (numCards > 1000) {
-    resultStr += `Valeur trop élevée pour ${cardType}. `;
+    resultStr += `Valeur trop élevée pour ${typeEmojis[cardType]}. `;
   } else if (numCards < 0) {
-    resultStr += `Veuillez entrer un nombre valide pour ${cardType}. `;
+    resultStr += `Veuillez entrer un nombre valide pour ${typeEmojis[cardType]}. `;
   } else {
     const { exactProbability, lessThanProbability } = getProbabilities(packsOpened, numCards, rate);
     const moreThanProbability = 1 - exactProbability - lessThanProbability;
     const atLeastProbability  = 1 - lessThanProbability;
 
-    const cardPlural = numCards > 1 ? 's' : '';
     const packPlural = packsOpened > 1 ? 's' : '';
-    const item = cardType === 'rare' ? 'pack' : 'carte';
 
-    const goodText = ['<span class="bold-text"><em>plutôt bien</em></span>',
-                      '<span class="bold-text"><em>bien</em></span>',
-                      '<span class="bold-text"><em>très bien</em></span>',
-                      '<span class="bold-text"><em>incroyable</em></span>'];
-    const badText  = ['<span class="bold-text"><em>plutôt mauvais</em></span>',
-                      '<span class="bold-text"><em>mal</em></span>',
-                      '<span class="bold-text"><em>très mal</em></span>',
-                      '<span class="bold-text"><em>terrible</em></span>'];
-    const avgText = '<span class="bold-text"><em>moyen</em></span>';
-
-    const thresh = [1/Math.E, 0.20, 0.10, 0.05];
-    const flavorText = (exactProbability < thresh[0] ?
-                      (atLeastProbability < thresh[3] ? goodText[3] : 
-                       atLeastProbability < thresh[2] ? goodText[2] :
-                       atLeastProbability < thresh[1] ? goodText[1] :
-                       atLeastProbability < thresh[0] ? goodText[0] :
-                      (atLeastProbability < 1-thresh[0]) || (moreThanProbability < thresh[0]) ? avgText :
-                      moreThanProbability < 1-thresh[1] ? badText[0] :
-                      moreThanProbability < 1-thresh[2] ? badText[1] :
-                      moreThanProbability < 1-thresh[3] ? badText[2] : badText[3]) : avgText);
-
-    resultStr += `Pour ${numCards} ${cardType}${cardPlural}, paquets attendus: <span class="bold-text">${(numCards/rate).toFixed(1)}</span>, `;
-    resultStr += `cartes attendues dans ${packsOpened} paquet${packPlural}: <span class="bold-text">${(packsOpened*rate).toFixed(1)}</span>.<br>`;
-    resultStr += `Votre chance pour ${cardType} est ${flavorText}.<br>`;
+    resultStr += `Pour ${numCards} ${typeEmojis[cardType]}, ouvertures attendues: <span class="bold-text">${(numCards/rate).toFixed(1)}</span>, `;
+    resultStr += `cartes attendues dans ${packsOpened} ouvertures${packPlural}: <span class="bold-text">${(packsOpened*rate).toFixed(1)}</span>.<br>`;
+    resultStr += `Votre chance pour ${typeEmojis[cardType]} est ${getLuckText(atLeastProbability, moreThanProbability)}.<br>`;
   }
   document.getElementById('individualResults').innerHTML += resultStr + '<br>';
 }
+
+function getLuckText(atLeastProbability, moreThanProbability) {
+  const goodText = ['<span class="bold-text"><em>plutôt bonne</em></span>',
+                    '<span class="bold-text"><em>bien</em></span>',
+                    '<span class="bold-text"><em>très bien</em></span>',
+                    '<span class="bold-text"><em>incroyable</em></span>'];
+  const badText  = ['<span class="bold-text"><em>plutôt mauvaise</em></span>',
+                    '<span class="bold-text"><em>mal</em></span>',
+                    '<span class="bold-text"><em>très mal</em></span>',
+                    '<span class="bold-text"><em>terrible</em></span>'];
+  const avgText = '<span class="bold-text"><em>moyenne</em></span>';
+
+  const thresh = [1/Math.E, 0.20, 0.10, 0.05];
+  return (atLeastProbability < thresh[3] ? goodText[3] : 
+          atLeastProbability < thresh[2] ? goodText[2] :
+          atLeastProbability < thresh[1] ? goodText[1] :
+          atLeastProbability < thresh[0] ? goodText[0] :
+          (atLeastProbability < 1-thresh[0]) || (moreThanProbability < thresh[0]) ? avgText :
+          moreThanProbability < 1-thresh[1] ? badText[0] :
+          moreThanProbability < 1-thresh[2] ? badText[1] :
+          moreThanProbability < 1-thresh[3] ? badText[2] : badText[3]);
+}
+
 
 function getProbabilities(n, k, p) {
   const exactProbability = binomialProbability(n, k, p);
@@ -252,7 +253,7 @@ function calculateGlobalLuck() {
   
   document.getElementById('globalLuckResult').innerHTML =
     "Score global de chance (z-score) : <span class='bold-text'>" + globalZ.toFixed(2) + "</span><br>" +
-    "Votre note de chance sur 20 : <span class='bold-text'>" + note.toFixed(1) + "/20</span><br>" +
+    "Votre note de chance sur 20 : <span class='bold-text'>" + note.toFixed(0) + "/20</span><br>" +
     "Vous êtes " + luckDescription + ".";
 
     const username = prompt("Entrez votre pseudo pour enregistrer votre score :");
@@ -289,7 +290,7 @@ async function getLeaderboard() {
       // Ajout d'un event listener pour afficher les détails du joueur au clic
       entry.addEventListener("click", (e) => showPlayerDetails(doc.id, e));
       const medal = rank < 3 ? medals[rank] : "";
-      entry.innerHTML = `<strong>${data.name}</strong>: ${data.score} ${medal}`;
+      entry.innerHTML = `<strong>${data.name}</strong>: <span>${data.score}</span> ${medal}`;
       leaderboardContainer.appendChild(entry);
       rank++;
   });
@@ -303,6 +304,16 @@ async function showPlayerDetails(docId, event) {
     const details = data.details;
     const detailsDiv = document.getElementById("playerDetails");
 
+    // Dictionnaire pour les emojis
+    const typeEmojis = {
+      crown: "👑",
+      threeStar: "⭐⭐⭐",
+      twoStar: "⭐⭐",
+      oneStar: "⭐",
+      fourDiamond: "♦♦♦♦",
+      rarePacks: "🃏"
+    };
+
     // Construire le contenu avec une en-tête regroupant le nom et le bouton de fermeture
     detailsDiv.innerHTML = `
       <div class="popup-header">
@@ -310,12 +321,12 @@ async function showPlayerDetails(docId, event) {
         <span class="close-btn">&times;</span>
       </div>
       <p>Paquets ouverts : ${details.packsOpened}</p>
-      <p>Cartes Crown : ${details.crown}</p>
-      <p>Cartes Three Star : ${details.threeStar}</p>
-      <p>Cartes Two Star : ${details.twoStar}</p>
-      <p>Cartes One Star : ${details.oneStar}</p>
-      <p>Cartes Four Diamond : ${details.fourDiamond}</p>
-      <p>God Packs : ${details.rarePacks}</p>
+      <p>Cartes ${typeEmojis.crown} : ${details.crown}</p>
+      <p>Cartes ${typeEmojis.threeStar} : ${details.threeStar}</p>
+      <p>Cartes ${typeEmojis.twoStar} : ${details.twoStar}</p>
+      <p>Cartes ${typeEmojis.oneStar} : ${details.oneStar}</p>
+      <p>Cartes ${typeEmojis.fourDiamond} : ${details.fourDiamond}</p>
+      <p>God Packs ${typeEmojis.rarePacks} : ${details.rarePacks}</p>
     `;
 
     // Positionner verticalement la bulle par rapport à l'élément cliqué
@@ -332,8 +343,6 @@ async function showPlayerDetails(docId, event) {
     console.log("Aucun document trouvé pour cet ID.");
   }
 }
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
   getLeaderboard();
