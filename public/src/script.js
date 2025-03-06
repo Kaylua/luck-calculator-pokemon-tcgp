@@ -275,8 +275,16 @@ function calculateGlobalLuck() {
 
 async function getLeaderboard() {
   const leaderboardContainer = document.getElementById("leaderboard");
-  leaderboardContainer.innerHTML = "<h2>Classement des Joueurs /20</h2>";
-
+  leaderboardContainer.innerHTML = `
+    <h2>
+      Classement des Joueurs /20 
+      <span class="info-icon">i
+        <span class="tooltip-text">
+          ● Vous pouvez mettre à jour votre classement en saisissant à nouveau le même nom.<br>
+          ● Vous pouvez afficher les détails d'un joueur en cliquant dessus.
+        </span>
+      </span>
+    </h2>`;
   const q = query(collection(db, "scores"), orderBy("score", "desc"), limit(35));
   const querySnapshot = await getDocs(q);
 
@@ -314,7 +322,7 @@ async function showPlayerDetails(docId, event) {
       rarePacks: "🃏"
     };
 
-    // Construire le contenu avec une en-tête regroupant le nom et le bouton de fermeture
+    // Construire le contenu du popup
     detailsDiv.innerHTML = `
       <div class="popup-header">
         <h3 class="popup-title">Détails pour ${data.name}</h3>
@@ -329,12 +337,16 @@ async function showPlayerDetails(docId, event) {
       <p>God Packs ${typeEmojis.rarePacks} : ${details.rarePacks}</p>
     `;
 
-    // Positionner verticalement la bulle par rapport à l'élément cliqué
-    const relativeTop = event.target.offsetTop;
-    detailsDiv.style.top = relativeTop + "px";
-    detailsDiv.style.display = "block"; // Afficher la bulle
+    // Récupérer le conteneur du leaderboard (assurez-vous qu'il a position: relative)
+    const leaderboardContainer = document.querySelector('.leaderboard-container');
 
-    // Ajouter l'événement pour fermer la bulle via le bouton
+    // Positionner verticalement le popup à partir de l'offsetTop de l'élément cliqué
+    detailsDiv.style.top = event.target.offsetTop + "px";
+    // Positionner horizontalement le popup à droite du leaderboard
+    detailsDiv.style.left = (leaderboardContainer.offsetWidth + 10) + "px";
+    detailsDiv.style.display = "block";
+
+    // Ajouter l'événement pour fermer le popup via le bouton
     const closeBtn = detailsDiv.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => {
       detailsDiv.style.display = "none";

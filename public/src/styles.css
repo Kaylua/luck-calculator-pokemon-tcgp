@@ -10,6 +10,14 @@ body {
   align-items: center;
 }
 
+.instruction {
+  font-size: 0.3em;
+  color: #777;
+  margin-top: 5px;
+  text-align: center;
+}
+
+
 /* Style pour l'en-tête de la bulle */
 .popup-header {
   display: flex;
@@ -28,23 +36,21 @@ body {
   padding: 15px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
   font-size: 16px;
   position: absolute;
-  right: 0; /* Toujours aligné à droite du conteneur */
-  max-width: 250px;
+  min-width: 200px;
   z-index: 1000;
 }
 
-/* Flèche pour imiter une bulle (optionnel) */
 .player-details::before {
   content: "";
   position: absolute;
-  top: 10px;
-  right: -10px;
+  top: 10px;          /* Ajustez cette valeur si nécessaire pour un alignement vertical optimal */
+  left: -10px;        /* La flèche sera placée à gauche du popup */
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent #fff;
+  border-color: transparent #fff transparent transparent;
 }
 
 .close-btn {
@@ -76,7 +82,7 @@ body {
   background-color: #fff;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 #leaderboard p {
@@ -105,7 +111,7 @@ body {
   background-color: #fff;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 #leaderboard p {
@@ -216,4 +222,54 @@ h2 {
   display: flex;
   justify-content: space-between;
 }
+}
+
+.info-icon {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: help;
+  background-color: #dddddd;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.info-icon .tooltip-text {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  left: 105%; /* Positionné à droite de l'icône */
+  top: 50%;   /* Centré verticalement par rapport à l'icône */
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Modification de la flèche pour qu'elle pointe vers l'icône */
+.info-icon .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* La flèche est positionnée à gauche du tooltip */
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #555555 transparent transparent;
+}
+
+/* Affichage du tooltip au survol */
+.info-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
