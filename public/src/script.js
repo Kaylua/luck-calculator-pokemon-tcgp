@@ -1,15 +1,14 @@
 import { db } from "./firebase.js";
-import { collection, addDoc, getDocs, query, orderBy, limit, doc, setDoc, where, updateDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { collection, addDoc, getDoc, getDocs, query, orderBy, limit, doc, setDoc, where, updateDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-async function saveScore(username, score) {
+async function saveScore(username, score, details) {
   try {
       const scoresRef = collection(db, "scores");
       const q = query(scoresRef, where("name", "==", username));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-          // Un score existe déjà pour ce joueur
-          const existingDoc = querySnapshot.docs[0]; // Prend le premier document trouvé
+          const existingDoc = querySnapshot.docs[0];
           const existingScore = existingDoc.data().score;
           const userDocRef = doc(db, "scores", existingDoc.id);
 
@@ -19,20 +18,21 @@ async function saveScore(username, score) {
 
           if (confirmReplace) {
               await updateDoc(userDocRef, {
-                  score: parseFloat(score), // Met à jour avec la nouvelle valeur
-                  timestamp: new Date()
+                  score: parseFloat(score),
+                  timestamp: new Date(),
+                  details: details  // mise à jour des infos détaillées
               });
               console.log(`Score mis à jour pour ${username} : ${score}`);
-              getLeaderboard(); // Met à jour le classement après l'ajout/modification
+              getLeaderboard();
           } else {
               console.log("Mise à jour annulée.");
           }
       } else {
-          // Aucun score existant, on ajoute un nouveau document
           await setDoc(doc(scoresRef), {
               name: username,
-              score: parseFloat(score), // Garde les décimales
-              timestamp: new Date()
+              score: parseFloat(score),
+              timestamp: new Date(),
+              details: details  // sauvegarde des infos détaillées
           });
           console.log("Nouveau score enregistré pour :", username);
           getLeaderboard();
@@ -41,6 +41,7 @@ async function saveScore(username, score) {
       console.error("Erreur lors de l'enregistrement :", e);
   }
 }
+
 
 function calculateAllLuck() {
   const packsEntry = document.getElementById('packsOpened').value;
@@ -256,10 +257,18 @@ function calculateGlobalLuck() {
 
     const username = prompt("Entrez votre pseudo pour enregistrer votre score :");
     const globalLuckScore = parseFloat(note.toFixed(1));
-    
     if (username) {
-        saveScore(username, globalLuckScore);
-        getLeaderboard(); // Met à jour le classement après l’ajout du score
+        const details = {
+          packsOpened: packsOpened,
+          crown: document.getElementById('crCards').value,
+          threeStar: document.getElementById('3sCards').value,
+          twoStar: document.getElementById('2sCards').value,
+          oneStar: document.getElementById('1sCards').value,
+          fourDiamond: document.getElementById('4dCards').value,
+          rarePacks: document.getElementById('rareCards').value
+        };
+        saveScore(username, globalLuckScore, details);
+        getLeaderboard();
     }
 }
 
@@ -276,12 +285,55 @@ async function getLeaderboard() {
   querySnapshot.forEach((doc) => {
       const data = doc.data();
       const entry = document.createElement("p");
-      const medal = rank < 3 ? medals[rank] : ""; // Attribuer une médaille aux 3 premiers
+      entry.style.cursor = "pointer";
+      // Ajout d'un event listener pour afficher les détails du joueur au clic
+      entry.addEventListener("click", (e) => showPlayerDetails(doc.id, e));
+      const medal = rank < 3 ? medals[rank] : "";
       entry.innerHTML = `<strong>${data.name}</strong>: ${data.score} ${medal}`;
       leaderboardContainer.appendChild(entry);
       rank++;
   });
 }
+
+async function showPlayerDetails(docId, event) {
+  const docRef = doc(db, "scores", docId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    const details = data.details;
+    const detailsDiv = document.getElementById("playerDetails");
+
+    // Construire le contenu avec une en-tête regroupant le nom et le bouton de fermeture
+    detailsDiv.innerHTML = `
+      <div class="popup-header">
+        <h3 class="popup-title">Détails pour ${data.name}</h3>
+        <span class="close-btn">&times;</span>
+      </div>
+      <p>Paquets ouverts : ${details.packsOpened}</p>
+      <p>Cartes Crown : ${details.crown}</p>
+      <p>Cartes Three Star : ${details.threeStar}</p>
+      <p>Cartes Two Star : ${details.twoStar}</p>
+      <p>Cartes One Star : ${details.oneStar}</p>
+      <p>Cartes Four Diamond : ${details.fourDiamond}</p>
+      <p>God Packs : ${details.rarePacks}</p>
+    `;
+
+    // Positionner verticalement la bulle par rapport à l'élément cliqué
+    const relativeTop = event.target.offsetTop;
+    detailsDiv.style.top = relativeTop + "px";
+    detailsDiv.style.display = "block"; // Afficher la bulle
+
+    // Ajouter l'événement pour fermer la bulle via le bouton
+    const closeBtn = detailsDiv.querySelector('.close-btn');
+    closeBtn.addEventListener('click', () => {
+      detailsDiv.style.display = "none";
+    });
+  } else {
+    console.log("Aucun document trouvé pour cet ID.");
+  }
+}
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   getLeaderboard();

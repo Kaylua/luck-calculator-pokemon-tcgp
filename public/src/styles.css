@@ -10,6 +10,51 @@ body {
   align-items: center;
 }
 
+/* Style pour l'en-tête de la bulle */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.popup-title {
+  margin: 0; /* Supprime les marges par défaut du h3 */
+  font-size: 18px;
+}
+
+.player-details {
+  display: none; /* Caché par défaut */
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-size: 16px;
+  position: absolute;
+  right: 0; /* Toujours aligné à droite du conteneur */
+  max-width: 250px;
+  z-index: 1000;
+}
+
+/* Flèche pour imiter une bulle (optionnel) */
+.player-details::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: -10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #fff;
+}
+
+/* Style pour le bouton de fermeture placé à droite du titre */
+.close-btn {
+  font-size: 22px;
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
 /* Wrapper pour aligner les deux blocs */
 .main-container {
   display: flex;
@@ -29,8 +74,8 @@ body {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Style du leaderboard pour être à droite */
 .leaderboard-container {
+  position: relative; /* Pour que la bulle se positionne par rapport à ce conteneur */
   width: 30%;
   max-width: 300px;
   background-color: #fff;
