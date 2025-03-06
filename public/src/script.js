@@ -113,7 +113,7 @@ function calculateLuck(packsOpened, cardType) {
     const packPlural = packsOpened > 1 ? 's' : '';
 
     resultStr += `Pour ${numCards} ${typeEmojis[cardType]}, ouvertures attendues: <span class="bold-text">${(numCards/rate).toFixed(1)}</span>, `;
-    resultStr += `cartes attendues dans ${packsOpened} ouvertures${packPlural}: <span class="bold-text">${(packsOpened*rate).toFixed(1)}</span>.<br>`;
+    resultStr += `cartes attendues dans ${packsOpened} ouverture${packPlural}: <span class="bold-text">${(packsOpened*rate).toFixed(1)}</span>.<br>`;
     resultStr += `Votre chance pour ${typeEmojis[cardType]} est ${getLuckText(atLeastProbability, moreThanProbability)}.<br>`;
   }
   document.getElementById('individualResults').innerHTML += resultStr + '<br>';
@@ -253,7 +253,7 @@ function calculateGlobalLuck() {
   
   document.getElementById('globalLuckResult').innerHTML =
     "Score global de chance (z-score) : <span class='bold-text'>" + globalZ.toFixed(2) + "</span><br>" +
-    "Votre note de chance sur 20 : <span class='bold-text'>" + note.toFixed(0) + "/20</span><br>" +
+    "Votre note de chance sur 20 : <span class='bold-text'>" + note.toFixed(1) + "/20</span><br>" +
     "Vous êtes " + luckDescription + ".";
 
     const username = prompt("Entrez votre pseudo pour enregistrer votre score :");
