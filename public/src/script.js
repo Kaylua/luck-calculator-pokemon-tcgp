@@ -234,18 +234,23 @@ function calculateGlobalLuck() {
     return;
   }
   
-  const globalZ = globalZSum / count;
+  const globalZ = (globalZSum / count) -0.76; // ajustement de l'inflation dû au wonder picks et autres en ajout un facteur
+  //  négatif -0.76 au z score global, équivalent de 3.8 points en moins à la note finale /20
   let luckDescription;
-  if (globalZ > 2) {
-    luckDescription = "exceptionnellement chanceux";
+  if (globalZ > 1.5) {
+      luckDescription = "exceptionnellement chanceux";
   } else if (globalZ > 1) {
-    luckDescription = "très chanceux";
+      luckDescription = "très chanceux";
+  } else if (globalZ > 0.5) {
+      luckDescription = "assez chanceux";
+  } else if (globalZ > 0) {
+      luckDescription = "moyennement chanceux";
+  } else if (globalZ > -0.5) {
+      luckDescription = "plutôt malchanceux";
   } else if (globalZ > -1) {
-    luckDescription = "moyennement chanceux";
-  } else if (globalZ > -2) {
-    luckDescription = "peu chanceux";
+      luckDescription = "très malchanceux";
   } else {
-    luckDescription = "très malchanceux";
+      luckDescription = "exceptionnellement malchanceux";
   }
 
   let note = 10 + (globalZ * 5);
@@ -355,6 +360,34 @@ async function showPlayerDetails(docId, event) {
     console.log("Aucun document trouvé pour cet ID.");
   }
 }
+
+// async function adjustScores() { // pas utilisée pour le moment, c'est pour ajuster des scores.
+//   try {
+//     const scoresRef = collection(db, "scores");
+//     const querySnapshot = await getDocs(scoresRef);
+//     const updatePromises = [];
+
+//     querySnapshot.forEach((documentSnapshot) => {
+//       const data = documentSnapshot.data();
+//       const oldScore = data.score;
+//       const newScore = parseFloat((oldScore).toFixed(1));
+//       console.log(`Mise à jour du document ${documentSnapshot.id} : ${oldScore} -> ${newScore}`);
+
+//       // On prépare la mise à jour de ce document
+//       updatePromises.push(
+//         updateDoc(doc(db, "scores", documentSnapshot.id), {
+//           score: newScore
+//         })
+//       );
+//     });
+
+//     // On attend que toutes les mises à jour soient terminées
+//     await Promise.all(updatePromises);
+//     console.log("Tous les scores ont été ajustés avec succès.");
+//   } catch (error) {
+//     console.error("Erreur lors de l'ajustement des scores :", error);
+//   }
+// }
 
 document.addEventListener("DOMContentLoaded", () => {
   getLeaderboard();

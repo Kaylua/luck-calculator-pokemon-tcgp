@@ -1,0 +1,28 @@
+Save BDD avant modif
+
+Document ID 	details 	name 	score 	timestamp
+0e3DJF72y5NoXFcVbkgL 	{oneStar: "84", threeStar: "15", twoStar: "16", packsOpened: 505, rarePacks: "1", crown: "2", fourDiamond: "45"} 	"Piway" 	18.8 	6 mars 2025 à 17:31:59 UTC+1
+0xQ4mvN9rcw1wGixKmeC 	{threeStar: "1", packsOpened: 19, rarePacks: "0", crown: "0", oneStar: "4", fourDiamond: "4", twoStar: "0"} 	"nanas" 	13.2 	6 mars 2025 à 23:29:40 UTC+1
+11Xe4IMiiP3tAlKzLBSK 	{threeStar: "5", rarePacks: "0", crown: "0", fourDiamond: "54", twoStar: "15", packsOpened: 471, oneStar: "69"} 	"koma" 	12.6 	6 mars 2025 à 17:25:38 UTC+1
+3k9tFl2urAHwOdArBTum 	{fourDiamond: "49", twoStar: "18", packsOpened: 500, rarePacks: "0", oneStar: "73", threeStar: "5", crown: "2"} 	"Sgt_Fromage" 	13.6 	6 mars 2025 à 17:46:07 UTC+1
+4oZDl55teFml7YYehZQu 	{oneStar: "47", threeStar: "4", crown: "0", twoStar: "13", packsOpened: 341, rarePacks: "1", fourDiamond: "34"} 	"Anto" 	13.8 	6 mars 2025 à 22:14:14 UTC+1
+63PwFeGsoicPHfQYfUX4 	{crown: "2", oneStar: "64", packsOpened: 519, rarePacks: "0", threeStar: "10", twoStar: "13", fourDiamond: "54"} 	"TYTY EX" 	13.1 	6 mars 2025 à 17:29:05 UTC+1
+Arxc3foSmYD9UQuUDaxo 	{threeStar: "4", crown: "2", fourDiamond: "44", packsOpened: 386, twoStar: "11", rarePacks: "0", oneStar: "65"} 	"Kenchin" 	14.9 	7 mars 2025 à 12:24:44 UTC+1
+BdVNjWAT3C8BD07E5CTf 	{crown: "5", fourDiamond: "40", rarePacks: "1", twoStar: "16", packsOpened: 482, oneStar: "64", threeStar: "5"} 	"Lefort02" 	15.8 	7 mars 2025 à 12:16:56 UTC+1
+CVFMmkfZM8cn8Q6RXOXE 	{threeStar: "4", oneStar: "60", crown: "4", packsOpened: 370, fourDiamond: "37", twoStar: "7", rarePacks: "0"} 	"Hélice" 	14.7 	6 mars 2025 à 18:25:19 UTC+1
+EIx6U4R6XhjBy7a02UZw 	{twoStar: "7", threeStar: "9", fourDiamond: "51", rarePacks: "0", crown: "5", oneStar: "63", packsOpened: 427} 	"Kiki" 	17.3 	6 mars 2025 à 18:09:22 UTC+1
+GybRhtNtppAKkvg0osMw 	{threeStar: "3", rarePacks: "0", crown: "1", twoStar: "10", fourDiamond: "36", oneStar: "42", packsOpened: 287} 	"OAB" 	13.9 	6 mars 2025 à 17:48:14 UTC+1
+LUNEgfrQUfs0Mjr9ngap 	{packsOpened: 429, fourDiamond: "36", twoStar: "18", threeStar: "4", rarePacks: "1", crown: "1", oneStar: "61"} 	"Dina" 	13.9 	6 mars 2025 à 17:19:41 UTC+1
+QTSQ2JluhpOTMOmRwKyg 	{threeStar: "7", rarePacks: "1", oneStar: "64", packsOpened: 423, fourDiamond: "51", twoStar: "16", crown: "0"} 	"Ksike08" 	16.6 	6 mars 2025 à 17:38:49 UTC+1
+RmG6C7TuTvWA1HW3zw8f 	{rarePacks: "1", packsOpened: 574, threeStar: "14", oneStar: "82", twoStar: "17", fourDiamond: "63", crown: "1"} 	"Maupa" 	17 	6 mars 2025 à 17:23:34 UTC+1
+YQR9ttsen1t7UFyXOJEu 	{rarePacks: "1", crown: "1", fourDiamond: "32", threeStar: "2", packsOpened: 289, twoStar: "15", oneStar: "52"} 	"lola :)" 	17.9 	7 mars 2025 à 12:24:48 UTC+1
+YWmRt0TnR8UkMInWnMvt 	{fourDiamond: "35", rarePacks: "0", crown: "0", packsOpened: 364, threeStar: "3", oneStar: "58", twoStar: "9"} 	"Kaylua" 	10.8 	8 mars 2025 à 00:14:22 UTC+1
+YtSVVyl5Fp9mmcXoID9y 	{oneStar: "109", crown: "3", rarePacks: "0", fourDiamond: "80", packsOpened: 772, twoStar: "20", threeStar: "8"} 	"Thomas2899" 	13.1 	6 mars 2025 à 18:32:28 UTC+1
+auFQg3cUr5hRQWIXWZyf 	{oneStar: "66", twoStar: "12", threeStar: "9", packsOpened: 455, fourDiamond: "57", rarePacks: "1", crown: "1"} 	"boby" 	16.7 	6 mars 2025 à 17:30:23 UTC+1
+bKDt49aHGDRh28FeDROz 	{threeStar: "3", packsOpened: 300, crown: "2", fourDiamond: "35", rarePacks: "0", twoStar: "6", oneStar: "45"} 	"Djunski" 	13.3 	6 mars 2025 à 18:00:17 UTC+1
+fM7nuM23zcHS0yH6wR1X 	{threeStar: "8", crown: "2", twoStar: "13", rarePacks: "0", fourDiamond: "50", oneStar: "63", packsOpened: 440} 	"JUSLI" 	15.1 	6 mars 2025 à 17:38:43 UTC+1
+oVwxjz3AkNm8kN9H4B5O 	{crown: "0", fourDiamond: "53", rarePacks: "0", threeStar: "8", packsOpened: 502, oneStar: "57", twoStar: "9"} 	"rico" 	9.6 	6 mars 2025 à 17:21:50 UTC+1
+q0afISHd3MTo0pH1psbB 	{rarePacks: "0", oneStar: "71", fourDiamond: "40", threeStar: "4", crown: "0", twoStar: "15", packsOpened: 456} 	"Mixed" 	11.2 	6 mars 2025 à 17:04:57 UTC+1
+qEsVbmcjNdweoSBNjsAo 	{fourDiamond: "36", rarePacks: "0", oneStar: "58", threeStar: "3", crown: "1", packsOpened: 366, twoStar: "12"} 	"ramolossh94" 	12.6 	6 mars 2025 à 23:23:04 UTC+1
+szT8pKVNKksyBoG10oj8 	{twoStar: "12", rarePacks: "0", oneStar: "52", packsOpened: 360, fourDiamond: "35", threeStar: "5", crown: "1"} 	"LZ" 	12.8 	7 mars 2025 à 23:02:10 UTC+1
+wDRlyoOta2BNKQ2W92OG 	{fourDiamond: "41", oneStar: "68", packsOpened: 439, twoStar: "19", crown: "1", rarePacks: "0", threeStar: "5"} 	"Cara" 	13.9 	6 mars 2025 à 19:31:54 UTC+1 
