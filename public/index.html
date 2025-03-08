@@ -7,7 +7,7 @@
   <title>Calculateur de Chance Pokémon TCG Pocket</title>
   <link rel="stylesheet" href="src/styles.css">
   <script type="module" src="src/firebase.js"></script>
-  <script type="module" src="src/script.js?v=1.0.1"></script>
+  <script type="module" src="src/script.js?v=1.0.3"></script>
 </head>
 <body>
   <div class="main-container">
@@ -40,6 +40,10 @@
           <input type="number" id="packsOpened" min="0" max="10000"/>
         </div>
       </div>
+
+      <p class="info-text">
+        📌 Un <strong>z-score de 0</strong> signifie un résultat conforme aux probabilités, soit une <strong>note de 10/20</strong>. Plus il est élevé, plus vous êtes chanceux, et inversement.
+      </p>
 
       <div class="section">
         <button class="button" onclick="calculateAllLuck()">Calculer la chance</button>

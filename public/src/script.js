@@ -237,17 +237,15 @@ function calculateGlobalLuck() {
   const globalZ = (globalZSum / count) -0.76; // ajustement de l'inflation dû au wonder picks et autres en ajout un facteur
   //  négatif -0.76 au z score global, équivalent de 3.8 points en moins à la note finale /20
   let luckDescription;
-  if (globalZ > 1.5) {
+  if (globalZ >= 1) {
       luckDescription = "exceptionnellement chanceux";
-  } else if (globalZ > 1) {
+  } else if (globalZ >= 0.5) {
       luckDescription = "très chanceux";
-  } else if (globalZ > 0.5) {
-      luckDescription = "assez chanceux";
-  } else if (globalZ > 0) {
+  } else if (globalZ >= 0) {
       luckDescription = "moyennement chanceux";
-  } else if (globalZ > -0.5) {
+  } else if (globalZ >= -0.5) {
       luckDescription = "plutôt malchanceux";
-  } else if (globalZ > -1) {
+  } else if (globalZ >= -1) {
       luckDescription = "très malchanceux";
   } else {
       luckDescription = "exceptionnellement malchanceux";
