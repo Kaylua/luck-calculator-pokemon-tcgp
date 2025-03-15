@@ -5,73 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Calculateur de chance Pokémon TCG Pocket">
   <title>Calculateur de Chance Pokémon TCG Pocket</title>
+  <!-- Intégration de Tailwind CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Fichier custom minimal (pour le background ou autres ajustements spécifiques) -->
   <link rel="stylesheet" href="src/styles.css">
   <script type="module" src="src/firebase.js"></script>
   <script type="module" src="src/script.js?v=1.0.3"></script>
 </head>
-<body>
-  <div class="main-container">
-    <div class="container">
-      <h1>Calculateur de Chance Pokémon TCG Pocket</h1>
-
-      <div class="section">
-        <label class="label">Entrez le nombre de cartes tirées :</label>
-        <div class="input-group">
-          <label for="crCards" class="prompt">Nombre de cartes 👑 :</label>
-          <input type="number" id="crCards" min="0" max="1000"/>
-          <label for="3sCards" class="prompt">Nombre de cartes ⭐⭐⭐ :</label>
-          <input type="number" id="3sCards" min="0" max="1000"/>
-          <label for="2sCards" class="prompt">Nombre de cartes ⭐⭐ :</label>
-          <input type="number" id="2sCards" min="0" max="1000"/>
-          <label for="1sCards" class="prompt">Nombre de cartes ⭐ :</label>
-          <input type="number" id="1sCards" min="0" max="1000"/>
-          <label for="4dCards" class="prompt">Nombre de cartes ♦♦♦♦ :</label>
-          <input type="number" id="4dCards" min="0" max="1000"/>
-          <label for="rareCards" class="prompt">Nombre de God Packs 🃏 :</label>
-          <input type="number" id="rareCards" min="0" max="100"/>
+<body class="bg-gray-100 flex justify-center items-center p-8" style="background-image: url('assets/images/tile2.png'); background-repeat: repeat; background-size: 10%;">
+  <div class="max-w-7xl w-full flex flex-col md:flex-row gap-8">
+    <!-- Bloc principal -->
+    <div class="flex-1 bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold text-center mb-6">Calculateur de Chance Pokémon TCG Pocket</h1>
+      
+      <!-- Section saisie des cartes -->
+      <div class="mb-8">
+        <label class="block text-xl font-bold mb-2">Entrez le nombre de cartes tirées :</label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="crCards" class="block font-medium">Nombre de cartes 👑 :</label>
+            <input type="number" id="crCards" min="0" max="1000" class="w-full border border-gray-300 rounded p-2">
+          </div>
+          <div>
+            <label for="3sCards" class="block font-medium">Nombre de cartes ⭐⭐⭐ :</label>
+            <input type="number" id="3sCards" min="0" max="1000" class="w-full border border-gray-300 rounded p-2">
+          </div>
+          <div>
+            <label for="2sCards" class="block font-medium">Nombre de cartes ⭐⭐ :</label>
+            <input type="number" id="2sCards" min="0" max="1000" class="w-full border border-gray-300 rounded p-2">
+          </div>
+          <div>
+            <label for="1sCards" class="block font-medium">Nombre de cartes ⭐ :</label>
+            <input type="number" id="1sCards" min="0" max="1000" class="w-full border border-gray-300 rounded p-2">
+          </div>
+          <div>
+            <label for="4dCards" class="block font-medium">Nombre de cartes ♦♦♦♦ :</label>
+            <input type="number" id="4dCards" min="0" max="1000" class="w-full border border-gray-300 rounded p-2">
+          </div>
+          <div>
+            <label for="rareCards" class="block font-medium">Nombre de God Packs 🃏 :</label>
+            <input type="number" id="rareCards" min="0" max="100" class="w-full border border-gray-300 rounded p-2">
+          </div>
         </div>
-        <div id="errorHandling" class="result"></div>
+        <div id="errorHandling" class="mt-4 text-center text-red-500"></div>
       </div>
 
-      <div class="section">
-        <label class="label">Entrez le nombre de paquets ouverts :</label>
-        <div class="input-group">
-          <label for="packsOpened" class="prompt">Nombre de paquets :</label>
-          <input type="number" id="packsOpened" min="0" max="10000"/>
+      <!-- Section saisie des paquets -->
+      <div class="mb-8">
+        <label class="block text-xl font-bold mb-2">Entrez le nombre de paquets ouverts :</label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="packsOpened" class="block font-medium">Nombre de paquets :</label>
+            <input type="number" id="packsOpened" min="0" max="10000" class="w-full border border-gray-300 rounded p-2">
+          </div>
         </div>
       </div>
 
-      <p class="info-text">
-        📌 Un <strong>z-score de 0</strong> signifie un résultat conforme aux probabilités, soit une <strong>note de 10/20</strong>. Plus il est élevé, plus vous êtes chanceux, et inversement.
+      <p class="text-center mb-6">
+        📌 Un <strong class="font-bold italic">z-score de 0</strong> signifie un résultat conforme aux probabilités, soit une <strong class="font-bold">note de 10/20</strong>. Plus il est élevé, plus vous êtes chanceux, et inversement.
       </p>
 
-      <div class="section">
-        <button class="button" onclick="calculateAllLuck()">Calculer la chance</button>
-
-        <div id="globalLuckResult" class="globalScore"></div>
-        <div id="individualResults" class="result"></div>
+      <!-- Section calcul & résultats -->
+      <div class="mb-8">
+        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded" onclick="calculateAllLuck()">Calculer la chance</button>
+        <div id="globalLuckResult" class="mt-6 text-center text-xl font-bold text-gray-800"></div>
+        <div id="individualResults" class="mt-4 text-center text-gray-700"></div>
       </div>
 
-      <div class="section">
-        <h1>Comment trouver vos stats</h1>
-        <div class="assets/image-gallery" style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 20px;">
-          <img src="assets/images/packs.png" alt="packs" style="width: 320px; height: auto;"/>
-          <label>Consultez le trophée de paquets pour connaître le nombre de paquets ouverts.</label>
-          <img src="assets/images/search1.png" alt="search1" style="width: 320px; height: auto;"/>
-          <label>Utilisez la fonction de recherche pour trouver votre nombre de cartes.</label>
-          <img src="assets/images/search2.png" alt="search2" style="width: 320px; height: auto;"/>
-          <label>Utilisez le filtre pour sélectionner une rareté spécifique.</label>
-          <img src="assets/images/search3.png" alt="search3" style="width: 320px; height: auto;"/>
-          <label>Consultez le compte affiché pour connaître le nombre de cartes de cette rareté.</label>
+      <!-- Section explications / images -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold text-center mb-4">Comment trouver vos stats</h2>
+        <div class="flex flex-col items-center gap-4">
+          <div class="flex flex-col items-center">
+            <img src="assets/images/packs.png" alt="packs" class="w-80 h-auto">
+            <span class="mt-2 text-center">Consultez le trophée de paquets pour connaître le nombre de paquets ouverts.</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <img src="assets/images/search1.png" alt="search1" class="w-80 h-auto">
+            <span class="mt-2 text-center">Utilisez la fonction de recherche pour trouver votre nombre de cartes.</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <img src="assets/images/search2.png" alt="search2" class="w-80 h-auto">
+            <span class="mt-2 text-center">Utilisez le filtre pour sélectionner une rareté spécifique.</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <img src="assets/images/search3.png" alt="search3" class="w-80 h-auto">
+            <span class="mt-2 text-center">Consultez le compte affiché pour connaître le nombre de cartes de cette rareté.</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="leaderboard-container">
-      <div id="leaderboard">Chargement...</div>
-      <div id="playerDetails" class="player-details"></div>
+    <!-- Section leaderboard -->
+    <div class="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-lg relative">
+      <div id="leaderboard">
+        <p class="text-center font-bold">Chargement...</p>
+      </div>
+      <!-- Popup détails du joueur -->
+      <div id="playerDetails" class="hidden absolute bg-white p-4 rounded-lg shadow-lg min-w-[200px] z-50"></div>
     </div>
-
   </div>
 
   <script src="script.js"></script>

@@ -3,45 +3,44 @@ import { collection, addDoc, getDoc, getDocs, query, orderBy, limit, doc, setDoc
 
 async function saveScore(username, score, details) {
   try {
-      const scoresRef = collection(db, "scores");
-      const q = query(scoresRef, where("name", "==", username));
-      const querySnapshot = await getDocs(q);
+    const scoresRef = collection(db, "scores");
+    const q = query(scoresRef, where("name", "==", username));
+    const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-          const existingDoc = querySnapshot.docs[0];
-          const existingScore = existingDoc.data().score;
-          const userDocRef = doc(db, "scores", existingDoc.id);
+    if (!querySnapshot.empty) {
+      const existingDoc = querySnapshot.docs[0];
+      const existingScore = existingDoc.data().score;
+      const userDocRef = doc(db, "scores", existingDoc.id);
 
-          const confirmReplace = confirm(
-              `Le joueur "${username}" a déjà un score de ${existingScore}. Voulez-vous écraser ce score avec ${score} ?`
-          );
+      const confirmReplace = confirm(
+        `Le joueur "${username}" a déjà un score de ${existingScore}. Voulez-vous écraser ce score avec ${score} ?`
+      );
 
-          if (confirmReplace) {
-              await updateDoc(userDocRef, {
-                  score: parseFloat(score),
-                  timestamp: new Date(),
-                  details: details  // mise à jour des infos détaillées
-              });
-              console.log(`Score mis à jour pour ${username} : ${score}`);
-              getLeaderboard();
-          } else {
-              console.log("Mise à jour annulée.");
-          }
+      if (confirmReplace) {
+        await updateDoc(userDocRef, {
+          score: parseFloat(score),
+          timestamp: new Date(),
+          details: details
+        });
+        console.log(`Score mis à jour pour ${username} : ${score}`);
+        getLeaderboard();
       } else {
-          await setDoc(doc(scoresRef), {
-              name: username,
-              score: parseFloat(score),
-              timestamp: new Date(),
-              details: details  // sauvegarde des infos détaillées
-          });
-          console.log("Nouveau score enregistré pour :", username);
-          getLeaderboard();
+        console.log("Mise à jour annulée.");
       }
+    } else {
+      await setDoc(doc(scoresRef), {
+        name: username,
+        score: parseFloat(score),
+        timestamp: new Date(),
+        details: details
+      });
+      console.log("Nouveau score enregistré pour :", username);
+      getLeaderboard();
+    }
   } catch (e) {
-      console.error("Erreur lors de l'enregistrement :", e);
+    console.error("Erreur lors de l'enregistrement :", e);
   }
 }
-
 
 function calculateAllLuck() {
   const packsEntry = document.getElementById('packsOpened').value;
@@ -90,10 +89,10 @@ function calculateLuck(packsOpened, cardType) {
   };
 
   const rate = (cardType === 'rare') ? rarePackRate :
-      normalPackRate * (1 - (1 -  rates['norm']['4th'][rarity]) * (1 -  rates['norm']['5th'][rarity])) +
-      rarePackRate * (1 - Math.pow(1 - ((rates['rare']['a1'][rarity] +
-                                      rates['rare']['a1a'][rarity] +
-                                      rates['rare']['a2'][rarity]) / numSeries), cardsPerPack));
+    normalPackRate * (1 - (1 -  rates['norm']['4th'][rarity]) * (1 -  rates['norm']['5th'][rarity])) +
+    rarePackRate * (1 - Math.pow(1 - ((rates['rare']['a1'][rarity] +
+                                    rates['rare']['a1a'][rarity] +
+                                    rates['rare']['a2'][rarity]) / numSeries), cardsPerPack));
 
   numCardsInput = document.getElementById(`${rarity}Cards`).value;
   const numCards = parseInt(numCardsInput);
@@ -112,23 +111,23 @@ function calculateLuck(packsOpened, cardType) {
 
     const packPlural = packsOpened > 1 ? 's' : '';
 
-    resultStr += `Pour ${numCards} ${typeEmojis[cardType]}, ouvertures attendues: <span class="bold-text">${(numCards/rate).toFixed(1)}</span>, `;
-    resultStr += `cartes attendues dans ${packsOpened} ouverture${packPlural}: <span class="bold-text">${(packsOpened*rate).toFixed(1)}</span>.<br>`;
+    resultStr += `Pour ${numCards} ${typeEmojis[cardType]}, ouvertures attendues: <span class="font-bold">${(numCards/rate).toFixed(1)}</span>, `;
+    resultStr += `cartes attendues dans ${packsOpened} ouverture${packPlural}: <span class="font-bold">${(packsOpened*rate).toFixed(1)}</span>.<br>`;
     resultStr += `Votre chance pour ${typeEmojis[cardType]} est ${getLuckText(atLeastProbability, moreThanProbability)}.<br>`;
   }
   document.getElementById('individualResults').innerHTML += resultStr + '<br>';
 }
 
 function getLuckText(atLeastProbability, moreThanProbability) {
-  const goodText = ['<span class="bold-text"><em>plutôt bonne</em></span>',
-                    '<span class="bold-text"><em>bien</em></span>',
-                    '<span class="bold-text"><em>très bien</em></span>',
-                    '<span class="bold-text"><em>incroyable</em></span>'];
-  const badText  = ['<span class="bold-text"><em>plutôt mauvaise</em></span>',
-                    '<span class="bold-text"><em>mal</em></span>',
-                    '<span class="bold-text"><em>très mal</em></span>',
-                    '<span class="bold-text"><em>terrible</em></span>'];
-  const avgText = '<span class="bold-text"><em>moyenne</em></span>';
+  const goodText = ['<span class="font-bold italic">plutôt bonne</span>',
+                    '<span class="font-bold italic">bien</span>',
+                    '<span class="font-bold italic">très bien</span>',
+                    '<span class="font-bold italic">incroyable</span>'];
+  const badText  = ['<span class="font-bold italic">plutôt mauvaise</span>',
+                    '<span class="font-bold italic">mal</span>',
+                    '<span class="font-bold italic">très mal</span>',
+                    '<span class="font-bold italic">terrible</span>'];
+  const avgText = '<span class="font-bold italic">moyenne</span>';
 
   const thresh = [1/Math.E, 0.20, 0.10, 0.05];
   return (atLeastProbability < thresh[3] ? goodText[3] : 
@@ -140,7 +139,6 @@ function getLuckText(atLeastProbability, moreThanProbability) {
           moreThanProbability < 1-thresh[2] ? badText[1] :
           moreThanProbability < 1-thresh[3] ? badText[2] : badText[3]);
 }
-
 
 function getProbabilities(n, k, p) {
   const exactProbability = binomialProbability(n, k, p);
@@ -234,59 +232,63 @@ function calculateGlobalLuck() {
     return;
   }
   
-  const globalZ = (globalZSum / count) -0.76; // ajustement de l'inflation dû au wonder picks et autres en ajout un facteur
-  //  négatif -0.76 au z score global, équivalent de 3.8 points en moins à la note finale /20
+  const globalZ = (globalZSum / count) - 0.76;
   let luckDescription;
   if (globalZ >= 1) {
-      luckDescription = "exceptionnellement chanceux";
+    luckDescription = "exceptionnellement chanceux";
   } else if (globalZ >= 0.5) {
-      luckDescription = "très chanceux";
+    luckDescription = "très chanceux";
   } else if (globalZ >= 0) {
-      luckDescription = "moyennement chanceux";
+    luckDescription = "moyennement chanceux";
   } else if (globalZ >= -0.5) {
-      luckDescription = "plutôt malchanceux";
+    luckDescription = "plutôt malchanceux";
   } else if (globalZ >= -1) {
-      luckDescription = "très malchanceux";
+    luckDescription = "très malchanceux";
   } else {
-      luckDescription = "exceptionnellement malchanceux";
+    luckDescription = "exceptionnellement malchanceux";
   }
 
   let note = 10 + (globalZ * 5);
   note = Math.min(Math.max(note, 0), 20);
   
   document.getElementById('globalLuckResult').innerHTML =
-    "Score global de chance (z-score) : <span class='bold-text'>" + globalZ.toFixed(2) + "</span><br>" +
-    "Votre note de chance sur 20 : <span class='bold-text'>" + note.toFixed(1) + "/20</span><br>" +
+    "Score global de chance (z-score) : <span class='font-bold'>" + globalZ.toFixed(2) + "</span><br>" +
+    "Votre note de chance sur 20 : <span class='font-bold'>" + note.toFixed(1) + "/20</span><br>" +
     "Vous êtes " + luckDescription + ".";
-
-    const username = prompt("Entrez votre pseudo pour enregistrer votre score :");
-    const globalLuckScore = parseFloat(note.toFixed(1));
-    if (username) {
-        const details = {
-          packsOpened: packsOpened,
-          crown: document.getElementById('crCards').value,
-          threeStar: document.getElementById('3sCards').value,
-          twoStar: document.getElementById('2sCards').value,
-          oneStar: document.getElementById('1sCards').value,
-          fourDiamond: document.getElementById('4dCards').value,
-          rarePacks: document.getElementById('rareCards').value
-        };
-        saveScore(username, globalLuckScore, details);
-        getLeaderboard();
-    }
+    
+  const username = prompt("Entrez votre pseudo pour enregistrer votre score :");
+  const globalLuckScore = parseFloat(note.toFixed(1));
+  if (username) {
+    const details = {
+      packsOpened: packsOpened,
+      crown: document.getElementById('crCards').value,
+      threeStar: document.getElementById('3sCards').value,
+      twoStar: document.getElementById('2sCards').value,
+      oneStar: document.getElementById('1sCards').value,
+      fourDiamond: document.getElementById('4dCards').value,
+      rarePacks: document.getElementById('rareCards').value
+    };
+    saveScore(username, globalLuckScore, details);
+    getLeaderboard();
+  }
 }
 
 async function getLeaderboard() {
   const leaderboardContainer = document.getElementById("leaderboard");
   leaderboardContainer.innerHTML = `
-    <h2>
+    <h2 class="text-xl font-bold text-center mb-2">
       Classement des Joueurs /20 
-      <span class="info-icon">i
-        <span class="tooltip-text">
-          ● Vous pouvez mettre à jour votre classement en saisissant à nouveau le même nom.<br>
-          ● Vous pouvez afficher les détails d'un joueur en cliquant dessus.
-        </span>
-      </span>
+<span class="relative group inline-block">
+  <!-- Icône info ronde -->
+  <span class="flex items-center justify-center w-6 h-6 bg-blue-500 text-white rounded-full text-xs cursor-pointer hover:bg-blue-600 transition-colors">
+    i
+  </span>
+  <!-- Tooltip caché par défaut, affiché au survol -->
+  <span class="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 w-64 bg-gray-700 text-white text-sm rounded p-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+    ● Vous pouvez mettre à jour votre classement en saisissant à nouveau le même nom.<br>
+    ● Vous pouvez afficher les détails d'un joueur en cliquant dessus.
+  </span>
+</span>
     </h2>`;
   const q = query(collection(db, "scores"), orderBy("score", "desc"), limit(35));
   const querySnapshot = await getDocs(q);
@@ -295,15 +297,14 @@ async function getLeaderboard() {
   let rank = 0;
 
   querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const entry = document.createElement("p");
-      entry.style.cursor = "pointer";
-      // Ajout d'un event listener pour afficher les détails du joueur au clic
-      entry.addEventListener("click", (e) => showPlayerDetails(doc.id, e));
-      const medal = rank < 3 ? medals[rank] : "";
-      entry.innerHTML = `<strong>${data.name}</strong>: <span>${data.score}</span> ${medal}`;
-      leaderboardContainer.appendChild(entry);
-      rank++;
+    const data = doc.data();
+    const entry = document.createElement("p");
+    entry.className = "cursor-pointer font-bold my-1 p-1 hover:bg-gray-200 rounded";
+    entry.addEventListener("click", (e) => showPlayerDetails(doc.id, e));
+    const medal = rank < 3 ? medals[rank] : "";
+    entry.innerHTML = `<strong>${data.name}</strong>: <span>${data.score}</span> ${medal}`;
+    leaderboardContainer.appendChild(entry);
+    rank++;
   });
 }
 
@@ -325,11 +326,11 @@ async function showPlayerDetails(docId, event) {
       rarePacks: "🃏"
     };
 
-    // Construire le contenu du popup
+    // Construction du contenu du popup avec des classes Tailwind
     detailsDiv.innerHTML = `
-      <div class="popup-header">
-        <h3 class="popup-title">Détails pour ${data.name}</h3>
-        <span class="close-btn">&times;</span>
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-lg font-bold">Détails pour ${data.name}</h3>
+        <span class="text-2xl text-red-500 cursor-pointer close-btn">&times;</span>
       </div>
       <p>Paquets ouverts : ${details.packsOpened}</p>
       <p>Cartes ${typeEmojis.crown} : ${details.crown}</p>
@@ -340,52 +341,22 @@ async function showPlayerDetails(docId, event) {
       <p>God Packs ${typeEmojis.rarePacks} : ${details.rarePacks}</p>
     `;
 
-    // Récupérer le conteneur du leaderboard (assurez-vous qu'il a position: relative)
-    const leaderboardContainer = document.querySelector('.leaderboard-container');
-
-    // Positionner verticalement le popup à partir de l'offsetTop de l'élément cliqué
+    // Positionnement du popup par rapport à l'élément cliqué
+    const leaderboardContainer = document.querySelector('.relative');
     detailsDiv.style.top = event.target.offsetTop + "px";
-    // Positionner horizontalement le popup à droite du leaderboard
     detailsDiv.style.left = (leaderboardContainer.offsetWidth + 10) + "px";
-    detailsDiv.style.display = "block";
+    // Affichage en retirant la classe "hidden"
+    detailsDiv.classList.remove("hidden");
 
-    // Ajouter l'événement pour fermer le popup via le bouton
+    // Gestion de la fermeture du popup
     const closeBtn = detailsDiv.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => {
-      detailsDiv.style.display = "none";
+      detailsDiv.classList.add("hidden");
     });
   } else {
     console.log("Aucun document trouvé pour cet ID.");
   }
 }
-
-// async function adjustScores() { // pas utilisée pour le moment, c'est pour ajuster des scores.
-//   try {
-//     const scoresRef = collection(db, "scores");
-//     const querySnapshot = await getDocs(scoresRef);
-//     const updatePromises = [];
-
-//     querySnapshot.forEach((documentSnapshot) => {
-//       const data = documentSnapshot.data();
-//       const oldScore = data.score;
-//       const newScore = parseFloat((oldScore).toFixed(1));
-//       console.log(`Mise à jour du document ${documentSnapshot.id} : ${oldScore} -> ${newScore}`);
-
-//       // On prépare la mise à jour de ce document
-//       updatePromises.push(
-//         updateDoc(doc(db, "scores", documentSnapshot.id), {
-//           score: newScore
-//         })
-//       );
-//     });
-
-//     // On attend que toutes les mises à jour soient terminées
-//     await Promise.all(updatePromises);
-//     console.log("Tous les scores ont été ajustés avec succès.");
-//   } catch (error) {
-//     console.error("Erreur lors de l'ajustement des scores :", error);
-//   }
-// }
 
 document.addEventListener("DOMContentLoaded", () => {
   getLeaderboard();
